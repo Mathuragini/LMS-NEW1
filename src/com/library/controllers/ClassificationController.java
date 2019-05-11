@@ -1,6 +1,12 @@
 package com.library.controllers;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.json.Json;
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -28,7 +34,28 @@ public class ClassificationController extends HttpServlet {
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		AbstractApplicationContext ctx=new ClassPathXmlApplicationContext("Beans.xml");
+		ClassificationService classificationService=ctx.getBean("classificationService",ClassificationServiceImpl.class);
+		
+		response.setContentType("application/json");
+		PrintWriter writer = response.getWriter();
+		JsonObjectBuilder rootBuilder=Json.createObjectBuilder();
+		JsonArrayBuilder arrrayBuilder=Json.createArrayBuilder();
+		JsonObjectBuilder planBuilder= Json.createObjectBuilder();
+		
+		for(Classification classification:classificationService.fetchClassificationList()) {
+			JsonObject planJson = planBuilder.add("classificationId",classification.getClassificationId())
+					.add("classificationName",classification.getClassificationName()).build();
+			arrrayBuilder.add(planJson);
+			//System.out.println(classification.getClassificationId()+""+classification.getClassificationName());
+		}
+		
+		JsonObject root = rootBuilder.add("classification",arrrayBuilder).build();
+		writer.print(root);
+		System.out.println(root);
+		writer.flush();
+		writer.close();
+		//response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	

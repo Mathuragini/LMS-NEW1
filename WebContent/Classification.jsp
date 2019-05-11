@@ -56,27 +56,17 @@
   
   <!-- Create table -->
   <br><br>
-   <table class="table">
+   <table class="table" id="classificationTable">
     <thead>
       <tr>
         <th>MainClassification ID</th>
         <th>MainClassification Name</th>
+        <th>Edit</th>
+        <th>Delete</th>
        
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>1</td>
-        <td>Maths</td>
-      </tr>
-      <tr>
-        <td>2</td>
-        <td>Bio</td>
-      </tr>
-      <tr>
-        <td>3</td>
-        <td>Tamil</td>
-      </tr>
     </tbody>
   </table>
   
