@@ -7,34 +7,43 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- * Servlet implementation class ClassificationController
- */
+import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import com.library.model.Classification;
+import com.library.service.ClassificationService;
+import com.library.service.impl.ClassificationServiceImpl;
+
+
 @WebServlet("/ClassificationController")
 public class ClassificationController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
+   
     public ClassificationController() {
         super();
-        // TODO Auto-generated constructor stub
+       
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
+	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		
+		String classificationName = request.getParameter("classificationName");
+		
+		
+		AbstractApplicationContext ctx=new ClassPathXmlApplicationContext("Beans.xml");
+		ClassificationService classificationService=ctx.getBean("classificationService",ClassificationServiceImpl.class);
+		Classification classification = new Classification();
+		classification.setClassificationName(classificationName);
+		
+		classificationService.addClassification(classification);
+
 		doGet(request, response);
 	}
 
